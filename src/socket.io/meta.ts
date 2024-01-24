@@ -7,29 +7,31 @@ import user from '../user';
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 import topics from '../topics';
 
-const SocketMeta = {
-    rooms: {
-        enter: {},
-        leaveCurrent: {},
-    },
-    reconnected: {},
-};
 // socket interface
 interface Socket {
     uid: any;
     currentRoom: any;
-    leave: any => Promise<void>; // is a function
-    join: any => Promise<void>; //is a function
+    leave: (_:any) => Promise<void>; // is a function
+    join: (_:any) => Promise<void>; //is a function
 }
 // data's interface
 interface Data {
     enter: string;
 }
 
-// interface for data and socket and callback
-// interface Callback {(any => Promise<void>)} // is a function which inputs void or error
+// interface Callback {
+//     (void) : void;
+// } // is a function which inputs void or error
 
-SocketMeta.reconnected = function (socket: Socket, _data : Data, callback : () => Promise<void>) : void {
+interface SocketMeta {
+    rooms: {
+        enter (Socket, Date, (void) => void|never) : void|never;
+        leaveCurrent (Socket, Date, () => void|never) : void|never;
+    }
+    reconnected (Socket, Date, (void) => void|never) : void|never;
+};
+
+SocketMeta.reconnected = function (socket: Socket, _data : Data, callback : (void) => void|never) : void {
     callback = callback || function () {};
     if (socket.uid) {
         topics.pushUnreadCount(socket.uid);
@@ -47,7 +49,7 @@ function leaveCurrentRoom(socket: Socket) : void {
     }
 }
 
-SocketMeta.rooms.enter = function (socket : Socket, data : Data, callback : Callback) : void {
+SocketMeta.rooms.enter = function (socket : Socket, data : Data, callback : () => void | never) : void | never {
     if (!socket.uid) {
         return callback();
     }

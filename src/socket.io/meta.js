@@ -9,18 +9,13 @@ const user_1 = __importDefault(require("../user"));
 // The next line calls a function in a module that has not been updated to TS yet
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 const topics_1 = __importDefault(require("../topics"));
-const SocketMeta = {
-    rooms: {
-        enter: {},
-        leaveCurrent: {},
-    },
-    reconnected: {},
-};
-void  > ; // is a function
-join: any => Promise; //is a function
-// interface for data and socket and callback
-// interface Callback {(any => Promise<void>)} // is a function which inputs void or error
-SocketMeta.reconnected = function (socket, _data, callback) {
+void  | never;
+leaveCurrent(Socket, Date, () => void  | never);
+void  | never;
+reconnected(Socket, Date, (void ), void  | never);
+void  | never;
+;
+SocketMeta.reconnected = function (socket, _data, callback, , , never) {
     callback = callback || function () { };
     if (socket.uid) {
         topics_1.default.pushUnreadCount(socket.uid);
